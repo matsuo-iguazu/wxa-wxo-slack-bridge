@@ -1,0 +1,21 @@
+# 依存ライブラリ (Code Engine等のデプロイには不要)
+node_modules/
+
+# 環境変数（重要！トークンやAPIキーが含まれるので絶対アップしない）
+.env
+*.env
+
+# OSが勝手に作るゴミファイル
+.DS_Store
+Thumbs.db
+
+# ログファイル
+*.log
+npm-debug.log*
+
+# ローカルでのテスト用ファイルや一時フォルダ
+tmp/
+dist/
+
+#　初期構築の定義内容退避
+backups/

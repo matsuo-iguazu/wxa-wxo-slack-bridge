@@ -1,0 +1,11 @@
+{
+  "name": "wxa-wxo-slack-bridge",
+  "version": "1.0.0",
+  "main": "bridge-server.js",
+  "scripts": {
+    "start": "node bridge-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
