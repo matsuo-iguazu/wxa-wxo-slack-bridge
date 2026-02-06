@@ -9,6 +9,7 @@ watsonx Assistant と Slack のメッセージを仲介する中継サーバー�
     - IAM API キー
 - Slack環境アプリケーション定義（Slack環境構築後に入手）
     - Slack Bot トークン (`xoxb-...`)
+    - Slack Signing Secret（署名検証用）
     - Slack チャンネル ID (`C...`)
 
 ## 2. イメージのbuildとpush
@@ -84,10 +85,26 @@ Code Engineの **アプリケーション** メニューから「作成 +」で�
 Slack から取得した情報を Code Engine に反映させます。
 
 1.  Code Engine の対象アプリケーションのコンソールで [構成] > [環境変数] を開く。
-2.  以下の 3 つの変数を追加する（リテラル値）。
-    - `SLACK_BOT_TOKEN`
-    - `SLACK_SIGNING_SECRET`
-    - `SLACK_CHANNEL_ID`
+2.  以下の変数を追加する（リテラル値）。
+
+#### 必須の環境変数
+| 変数名 | 説明 | 取得元 |
+|--------|------|--------|
+| `SLACK_BOT_TOKEN` | Slack Bot User OAuth Token | Slack App管理画面 > OAuth & Permissions |
+| `SLACK_SIGNING_SECRET` | Slack署名検証用シークレット | Slack App管理画面 > Basic Information > App Credentials |
+| `SLACK_CHANNEL_ID` | 通知先チャンネルID | Slackチャンネル詳細（`C`で始まる文字列） |
+
+#### オプションの環境変数（セキュリティ強化）
+| 変数名 | 説明 | 設定例 |
+|--------|------|--------|
+| `ALLOWED_ORIGINS` | CORS許可オリジン（カンマ区切り）<br>**未設定でも動作**しますが、本番環境では設定を推奨 | `https://your-company.cybozu.com` |
+
+**ALLOWED_ORIGINS の設定について:**
+- **未設定の場合**: 全オリジンからのアクセスを許可（開発・検証環境向け）
+- **設定する場合**: Garoonのドメインを指定（例: `https://xxxxx.cybozu.com`）
+- **複数環境がある場合**: カンマ区切りで複数指定可能（例: `https://prod.cybozu.com,https://test.cybozu.com`）
+- **効果**: 指定したGaroonドメイン以外からのアクセスをブロック
+
 3.  [**変更をリビジョンとしてデプロイ**] の **[デプロイ]** をクリックして再デプロイ。
 
 以上の作業で、wxAとSlackとを中継するサーバーが稼働可能になります。

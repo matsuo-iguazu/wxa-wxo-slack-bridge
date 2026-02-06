@@ -3,7 +3,7 @@
 有人エージェントのチャットインターフェースであるSlack Appの設定手順です。
 
 ## 1. マニフェストファイルの準備
-マニフェストファイル `menifest.json` 内の以下の箇所を、自分の Code Engine の URL(`https://~.appdomain.cloud`) に書き換えてください。URLの末尾に/slack/eventsを付与します。
+マニフェストファイル `manifest.json` 内の以下の箇所を、自分の Code Engine の URL(`https://~.appdomain.cloud`) に書き換えてください。URLの末尾に/slack/eventsを付与します。
 - `settings` > `event_subscriptions` > `request_url`
   - 形式: `[YOUR_CODE_ENGINE_URL]/slack/events`
 
