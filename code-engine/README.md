@@ -43,7 +43,7 @@ docker push <registry>/<namespace>/wxa-wxo-slack-bridge:v1
 
 ## 3. デプロイ設定
 
-### 3.1. コンテナ・レジストリ・アクセスの設定
+### 3.1. レジストリ・シークレットの作成
 Container Registry (ICR) にあるプライベートイメージを Code Engine にデプロイするため、**レジストリ・シークレット** の作成が必須です。
 
 1.  Code Engine プロジェクトのメニューから **[シークレットおよび configmap]** を選択。
@@ -71,23 +71,23 @@ Code Engineの **アプリケーション** メニューから「作成 +」で�
 - デフォルトで実行可能
 
 ### 3.3 パブリックURLの採取
-デプロイが成功したら、**ドメイン・マッピング** タブから以下のURLを控える
+デプロイが成功したら、**ドメイン・マッピング** タブから以下のURLを控える。SlackのManifestファイルに記載します。
 
 システム・ドメイン・マッピング > **パブリック**
+
+※以上でCode Engineでの作業を中断し、Slackの設定を行います。※
 
 ### 3.4 環境変数の設定 (Slack設定後の作業)
 
 **環境変数** (アプリケーション画面の **構成** タブ)
 
-- 以下内容を追加し登録する（リテラル値）
+Slack から取得した情報を Code Engine に反映させます。
 
-    | 変数名 | 説明 |
-    | :--- | :--- |
-    | `SLACK_BOT_TOKEN` | Slack App 管理画面(OAuth & Permissions) の "Bot User OAuth Token" (`xoxb-` で始まるもの) |
-    | `SLACK_SIGNING_SECRET` | Slack App 管理画面 (Basic Information) の "Signing Secret" |
-    | `SLACK_CHANNEL_ID` | 通知・チャットを行う Slack チャンネルの ID |
+1.  Code Engine の対象アプリケーションのコンソールで [構成] > [環境変数] を開く。
+2.  以下の 3 つの変数を追加する（リテラル値）。
+    - `SLACK_BOT_TOKEN`
+    - `SLACK_SIGNING_SECRET`
+    - `SLACK_CHANNEL_ID`
+3.  [**変更をリビジョンとしてデプロイ**] の **[デプロイ]** をクリックして再デプロイ。
 
-## （参考） Garoon側、Slack 側の設定
-**ドメイン・マッピング**  ページの **パブリック** URLを以下に登録します。
-- Garoon: `wxa-web-chat.js`
-- Slack: `Request URL` (Event Subscription内)
+以上の作業で、wxAとSlackとを中継するサーバーが稼働可能になります。

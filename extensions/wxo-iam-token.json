@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "IBM IAM Token Service Fix",
+    "version": "1.2.0"
+  },
+  "servers": [
+    {
+      "url": "https://iam.cloud.ibm.com"
+    }
+  ],
+  "paths": {
+    "/identity/token": {
+      "post": {
+        "operationId": "get_iam_token",
+        "summary": "IAMトークンを取得",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "application/x-www-form-urlencoded"
+            }
+          },
+          {
+            "name": "grant_type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "urn:ibm:params:oauth:grant-type:apikey"
+            }
+          },
+          {
+            "name": "apikey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,26 +7,24 @@
 本環境は、AI による自動応答と人間による高度なサポートをシームレスに繋ぐことを目的とし、以下の技術検証および実装を行っています。
 
 * **wxA ↔ wxO エージェント連携の確立**
-    * wxA の Extensions を定義・構築し、wxO エージェントを直接呼び出して結果を受領するフローを実装。
+    * wxA の Extensions を定義・構築し、wxO エージェントを直接呼び出して結果を受領するアクションフローを実装。
     * インテント解析に基づき、複数の wxO エージェントを動的に使い分ける処理を検証。
 * **サイボウズ Garoon への Web Chat 実装**
-    * Web Chat の Embed コードを Garoon の JavaScript カスタマイズとして定義し、業務ポータル上での対話 UI を実現。
+    * Web Chat の Embed コードを Garoon の JavaScript カスタマイズとして定義し、ポータル上での対話 UI を実現。
 * **Bring your own Service Desk (BYOSD) による Slack 連携**
-    * Web Chat のライブエージェント機能において、特定のベンダーに依存しない独自の接続先（BYO）として **IBM Cloud Code Engine** (Node.js/Express) を採用。
-    * Slack を有人オペレーターのインターフェースとして利用。Garoon ユーザーと Slack 間でのリアルタイム双方向通信を実現。
-    * 検証の結果、Web Chat のライブエージェント設定において特定のプラットフォーム選択に縛られず、柔軟なバックエンド接続が可能であることを実証。
+    * Web Chat のライブエージェント機能において、特定のベンダーに依存しない独自の接続先（BYO）として **IBM Cloud Code Engine** (Node.js/Express) 経由のSlackアクセスを構築。
+    * Slack を有人オペレーターのインターフェースとして利用。Garoon ユーザーと Slack 間でのリアルタイム双方向チャットを実現。
+    * 検証の結果、Web Chat の `Live agent` 設定において特定のサービスプラットフォーム選択を行わない `Bring your own`での実装による動作を確認した（設定画面での選択は不要）。
 
 ## 2. 必要リソース
 
-* **IBM watsonx Orchestrate (wxO)**: AI 業務自動化プラットフォーム
+* **IBM watsonx Orchestrate (wxO)**: AI エージェントプラットフォーム
 * **IBM watsonx Assistant (wxA)**: ※wxO に同梱されているインスタンスを利用
 * **IBM Cloud Code Engine**: Node.js (Express) フレームワークを利用したバックエンド実行環境
 * **Slack**: 有人エージェント用インターフェース
 * **サイボウズ Garoon**: フロントエンド（JavaScript カスタマイズ環境）
 
 ## 3. システムデータフロー
-
-
 
 ```mermaid
 sequenceDiagram
@@ -67,7 +65,7 @@ sequenceDiagram
 各ディレクトリの詳細は、リンク先の個別 README を参照してください。
 
 ### STEP 1: watsonx Assistant アシスタントの構築
-* **対象ディレクトリ**: [`/extentions`](./extentions/README.md)
+* **対象ディレクトリ**: [`/extensions`](./extensions/README.md)
 * **実装内容**:
     * 提供済みの定義 JSON ファイルをインポートし、3つの基本アクション（wxO エージェント呼び出し、有人連携等）を搭載。
     * 外部サービスとの接続（Extensions）を定義し、wxO との認証・認可設定を完了させます。
@@ -100,10 +98,10 @@ sequenceDiagram
 
 ## 5. 動作確認項目
 
-1.  **Garoon ↔ wxA ↔ wxO (自動化フロー)**
+1.  **Garoon ↔ wxA ↔ wxO (AIエージェントフロー)**
     * Garoon 上のチャットで特定のインテントを発生させ、Extensions 経由で wxO エージェントが正しく呼び出され、処理結果が画面に返却されること。
     * 複数の wxO エージェントが、インテントの振り分けによって正しく使い分けられていること。
-2.  **Garoon ↔ wxA ↔ Slack (有人連携フロー)**
+2.  **Garoon ↔ wxA ↔ Slack (有人エージェントフロー)**
     * 有人エージェント接続要求操作により、Slack の指定チャンネルに通知が送信されること。
     * Slack 側の通知メッセージに対し、**スレッド返信**を行うことで、その内容が Garoon の Web Chat 画面にリアルタイムで反映されること。
 
@@ -114,9 +112,17 @@ sequenceDiagram
     * wxO返答の参照コンテンツ表示機能の動作確認
 * **Slack 有人エージェント機能の高度化**: 
     * チャット履歴を有人エージェントに共有
-    * 有人エージェントの受け入れ拒否機能の実装確認
+    * 有人エージェントの受け入れ拒否機能、タイムアウト機能の実装確認
     * 有人エージェントセッションのマルチスレッド化
 * **wxA Extentionの再構築**: 
     * 現状の不備と課題点を修正
 * **運用ログ解析**:
     * wxOのActivtyログの当該処理の記録内容の確認・調整
+
+## 7. 検証を通じて発見・確認したこと（メモ）
+各手順等に記述した内容以外に手順や動作の確認を通じて発見したり確認したりしたことをここにメモとして残します。
+
+| 内容 | 説明 |
+| ---- | ---- |
+| Live Agent画面でBring your own 選択・保存は必要ない | Web chat チャネルの `Live agent` タブで他のサービスに含まれる形で `Bring your own`があり、選択保存ができるようになっているが、これは選択されていなくてもBring your ownエージェントは実装動作可能 |
+| wxOのコンテキストは `thread_id` で再利用可能 | wxOをAPI呼出した時の複数ターンの会話に於いてのコンテキストの再利用は `thread_id` 指定により保持される、会話結果を再投稿する必要は無い |

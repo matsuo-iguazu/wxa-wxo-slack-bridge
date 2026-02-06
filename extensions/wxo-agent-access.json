@@ -1,0 +1,106 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "watsonx Orchestrate Extension v2",
+    "description": "thread_idによる文脈維持に対応した拡張版",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.us-south.watson-orchestrate.cloud.ibm.com/instances/{instanceid}/v1/orchestrate",
+      "variables": {
+        "instanceid": {
+          "default": "00000000-0000-0000-0000-000000000000",
+          "description": "ハイフンありのinstanceidを入力してください"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/runs": {
+      "post": {
+        "operationId": "run_agent",
+        "summary": "エージェントにメッセージを送信（新規・継続両対応）",
+        "parameters": [
+          { "name": "Authorization", "in": "header", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agent_id": { "type": "string" },
+                  "thread_id": { "type": "string", "description": "継続の場合は前回のthread_idを指定" },
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "role": { "type": "string", "default": "user" },
+                      "content": { "type": "string" }
+                    },
+                    "required": ["role", "content"]
+                  }
+                },
+                "required": ["agent_id", "message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "thread_id": { "type": "string" },
+                    "run_id": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/messages": {
+      "get": {
+        "operationId": "list_messages",
+        "summary": "スレッドからメッセージ履歴を取得",
+        "parameters": [
+          { "name": "thread_id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "Authorization", "in": "header", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "role": { "type": "string" },
+                      "content": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "text": { "type": "string" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

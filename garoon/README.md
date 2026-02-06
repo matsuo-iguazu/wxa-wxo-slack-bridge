@@ -1,6 +1,6 @@
 # Garoon への実装手順
 
-Garoon 上で watsonx Assistant (wxA) の Web Chat を表示し、Assitantとのチャットと有人チャット連携を有効にするための設定手順です。
+Garoon 上で watsonx Assistant (wxA) の Web Chat を表示し、Assitantとのチャットを可能にするための設定手順です。
 
 ## 1. ファイルの準備
 `wxa-web-chat.js` をエディタで開き、先頭にある `CONFIG` の 4 つのパラメータを自身の環境に合わせて書き換えます。

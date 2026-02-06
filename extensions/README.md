@@ -1,4 +1,7 @@
-## セットアップ手順
+# watsonx Assistant / Extensions セットアップ手順
+
+watsonx Assistant (wxA) が watsonx Orchestrate (wxO)　にアクセス可能にするアシスタントとExtensionを以下の手順で行います。
+いずれも当フォルダの各種定義ファイルを利用します。
 
 ### 1. アシスタントの作成
 1. トップメニューから「+新規作成」を選択。
@@ -13,19 +16,20 @@
 4. `wxa-wxo-slack-action.json` をアップロード。
 5. CloseボタンでActionsメニューに戻る。3つのアクションが登録されていることを確認。
 
-### 3. Extension の登録 (IAM Token)
-1. 左メニュー「Integrations」を選択。
-2. 「Build custom extension」をクリック。
-3. **Basic information**: Nameに `wxo-iam-token` と入力。
-4. **Import OpenAPI**: `wxo-iam-token.json` をアップロード。
-5. 「Finish」まで進む。
-6. Integrations一覧の `wxo-iam-token` の「Add」をクリック。
-7. 「Authentication」および「Review operations」をそのまま「Next」で進み「Finish」をクリック。
-8. Integrations一覧の `wxo-iam-token` の「Open」をクリック。
-9. **Environment**: `Draft` を選択して「Confirm」。
-10. 何も変更せず「Save and exit」をクリック。
+### 3. Extension の登録 (トークン取得用)
+(ご注意) 現在の `wxo-agent-access.json` は us-south で稼働するwxOを想定しています。環境に応じて `servers`>`url`を書き換えてご利用ください
 
-### 4. Extension の登録 (Agent Access)
+1. 左メニュー「Integrations」＞「Build custom extension」をクリック。
+2. **Basic information**: Nameに `wxo-iam-token` と入力。
+3. **Import OpenAPI**: `wxo-iam-token.json` をアップロード。
+4. 「Finish」まで進む。
+5. Integrations一覧の `wxo-iam-token` の「Add」をクリック。
+6. 「Authentication」および「Review operations」をそのまま「Next」で進み「Finish」をクリック。
+7. Integrations一覧の `wxo-iam-token` の「Open」をクリック。
+8. **Environment**: `Draft` を選択して「Confirm」。
+9. 何も変更せず「Save and exit」をクリック。
+
+### 4. Extension の登録 (wxOエージェントアクセス)
 1. 左メニュー「Integrations」＞「Build custom extension」をクリック。
 2. **Basic information**: Nameに `wxo-agent-access` と入力。
 3. **Import OpenAPI**: `wxo-agent-access.json` をアップロード。
@@ -33,14 +37,14 @@
 5. Integrations一覧の `wxo-agent-access` の「Add」をクリック。
 6. **Authentication**: 
    - `Server variables` の `instance_id` 等に、wxOの「サービス・インスタンスURL」に含まれるUUID（`00000000-...`）を入力。
-7. 「Next」で進み「Finish」をクリック。
-8. Integrations一覧の `wxo-agent-access` の「Open」をクリック。
-9. **Environment**: `Draft` を選択して「Confirm」。
-10. 何も変更せず「Save and exit」をクリック。
+   - 「Next」で進み「Finish」をクリック。
+7. Integrations一覧の `wxo-agent-access` の「Open」をクリック。
+8. **Environment**: `Draft` を選択して「Confirm」。
+9. 何も変更せず「Save and exit」をクリック。
 
-### 5. アクションと Extension の紐付け設定
-※話題A、話題Bの2つのアクションに対してそれぞれ実施します。
-ご注意：Extension定義の各項目はタイミングにより、表示順が異なる場合があります。項目名（Parameters）をよく確認して入力してください。
+### 5. アクション内Step の Extension パラメータ設定
+- ※話題A、話題Bの2つのアクションに対してそれぞれ実施します。
+- (ご注意)：Extension定義の各項目はタイミングにより、表示順が異なる場合があります。項目名（Parameters）をよく確認して入力してください。
 
 #### 話題Aの設定
 1. 左メニュー「Actions」＞「Created by you」から「話題A...」のアクションを開く。
@@ -73,14 +77,8 @@
 6. 右上の保存アイコンをクリックして終了。
 
 #### 話題Bの設定
-1. 「話題B...」のアクションを開き、上記手順と同様に設定する。
+1. 「話題B...」のアクションを開き、上記[話題Aの設定]手順と同様に設定する。
 2. **agent_id**: 話題B用の別の `agentId` を入力。
 3. **開始条件**: 話題B用の発言例を入力。
 
-### 6. パラメータの置換（重要）
-インポートした Actions 内の変数を、ご自身の環境に合わせて書き換えてください。
-
-| 置換対象文字列 | 内容 |
-| :--- | :--- |
-| `YOUR_IBM_CLOUD_IAM_API_KEY` | IBM Cloud の IAM API キー |
-| `YOUR_ORCHESTRATE_AGENT_ID` | 利用する Orchestrate エージェントの ID |
+以上の設定で各アクションがwxOにアクセスしリクエスト結果を表示できるようになります。
