@@ -1,17 +1,21 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "watsonx Orchestrate Extension v2",
-    "description": "thread_idによる文脈維持に対応した拡張版",
-    "version": "1.1.0"
+    "title": "watsonx Orchestrate Extension",
+    "description": "wxOエージェントへのメッセージ送信とレスポンス取得。リージョンとインスタンスIDを設定可能。",
+    "version": "1.2.0"
   },
   "servers": [
     {
-      "url": "https://api.us-south.watson-orchestrate.cloud.ibm.com/instances/{instanceid}/v1/orchestrate",
+      "url": "https://api.{region}.watson-orchestrate.cloud.ibm.com/instances/{instanceid}/v1/orchestrate",
       "variables": {
+        "region": {
+          "default": "us-south",
+          "description": "wxOのリージョン（例: us-south, jp-tok, eu-de, eu-gb）。サービス・インスタンスURLの「api.」と「.watson-orchestrate」の間の部分です。"
+        },
         "instanceid": {
-          "default": "00000000-0000-0000-0000-000000000000",
-          "description": "ハイフンありのinstanceidを入力してください"
+          "default": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+          "description": "wxOインスタンスID（UUID形式、ハイフンあり）。サービス・インスタンスURLの「/instances/」以降の部分です。\n\n例: https://api.us-south.watson-orchestrate.cloud.ibm.com/instances/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee\n→ region: us-south\n→ instanceid: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
         }
       }
     }

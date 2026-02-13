@@ -1,0 +1,2677 @@
+{
+  "name": "wxa-wxo-slack-action",
+  "type": "action",
+  "valid": true,
+  "status": "Available",
+  "created": "2026-02-04T06:05:01.652Z",
+  "updated": "2026-02-04T07:14:41.751Z",
+  "language": "ja",
+  "skill_id": "90b6dfb5-382a-4110-971b-620049107dc4",
+  "workspace": {
+    "actions": [
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_354",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "【有人チャット】"
+                          },
+                          {
+                            "skill_variable": "input_text"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_354",
+            "next_step": "step_541"
+          },
+          {
+            "step": "step_541",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "有人チャットにつなぎます、お待ちください。"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {
+                    "service_desk": {
+                      "department": "Slack_Support"
+                    }
+                  }
+                },
+                "agent_available": {
+                  "message": "Let's send you to an available agent."
+                },
+                "agent_unavailable": {
+                  "message": "There are no agents available at this time. When one becomes available, we'll connect you."
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_541"
+          }
+        ],
+        "title": "有人チャットと話したい",
+        "action": "action_11692",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_11692_intent_18993"
+        },
+        "variables": [
+          {
+            "title": "【有人チャット】{variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_354",
+            "data_type": "any"
+          },
+          {
+            "title": "有人チャットにつなぎます、お待ちください。",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_541",
+            "data_type": "any"
+          }
+        ],
+        "launch_mode": "learning",
+        "next_action": "action_21393-2",
+        "topic_switch": {
+          "allowed_from": true,
+          "allowed_into": true,
+          "never_return": false
+        },
+        "disambiguation_opt_out": false
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_366",
+            "type": "standard",
+            "title": "入力テキスト（input.textを）入力パラメータ（input_text）に代入",
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "input.text"
+                  },
+                  "skill_variable": "input_text"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_366",
+            "next_step": "step_420"
+          },
+          {
+            "step": "step_420",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[DEBUG: 【話題A】 最初の入力] "
+                          },
+                          {
+                            "skill_variable": "input_text"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_420",
+            "condition": {
+              "eq": [
+                {
+                  "skill_variable": "debug_mode"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_994"
+          },
+          {
+            "step": "step_994",
+            "type": "standard",
+            "title": "トークン取得（Extension）",
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/identity/token",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": null,
+                  "catalog_item_id": null
+                },
+                "request_mapping": {
+                  "query": [
+                    {
+                      "value": {
+                        "scalar": "urn:ibm:params:oauth:grant-type:apikey"
+                      },
+                      "parameter": "grant_type"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "ibm_cloud_api_key"
+                      },
+                      "parameter": "apikey"
+                    }
+                  ],
+                  "header": [
+                    {
+                      "value": {
+                        "scalar": "application/x-www-form-urlencoded"
+                      },
+                      "parameter": "Content-Type"
+                    }
+                  ]
+                },
+                "result_variable": "step_994_result_1"
+              }
+            },
+            "variable": "step_994",
+            "next_step": "step_726"
+          },
+          {
+            "step": "step_726",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[トークン取得しました]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_726",
+            "next_step": "step_584"
+          },
+          {
+            "step": "step_584",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[DEBUG: access_token] "
+                          },
+                          {
+                            "variable": "step_994_result_1",
+                            "variable_path": "body.access_token"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_584",
+            "condition": {
+              "eq": [
+                {
+                  "skill_variable": "debug_mode"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_756"
+          },
+          {
+            "step": "step_756",
+            "type": "standard",
+            "title": "メッセージを投げる（Extension）*agent_id含む",
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/runs",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": null,
+                  "catalog_item_id": null
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "scalar": "user"
+                      },
+                      "parameter": "message.role"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "input_text"
+                      },
+                      "parameter": "message.content"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "wxo_agent_id_a"
+                      },
+                      "parameter": "agent_id"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "current_thread_id"
+                      },
+                      "parameter": "thread_id"
+                    }
+                  ],
+                  "header": [
+                    {
+                      "value": {
+                        "expression": "\"Bearer \"+${step_994_result_1.body.access_token}"
+                      },
+                      "parameter": "Authorization"
+                    }
+                  ]
+                },
+                "result_variable": "step_756_result_1"
+              }
+            },
+            "variable": "step_756",
+            "next_step": "step_159"
+          },
+          {
+            "step": "step_159",
+            "type": "standard",
+            "title": "thread_id を記録",
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "variable": "step_756_result_1",
+                    "variable_path": "body.thread_id"
+                  },
+                  "skill_variable": "current_thread_id"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_159",
+            "next_step": "step_118"
+          },
+          {
+            "step": "step_118",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[取得中] お待ちください..."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_118",
+            "next_step": "step_757"
+          },
+          {
+            "step": "step_757",
+            "type": "standard",
+            "title": "メッセージ（body）を取得（Extension）",
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/threads/{thread_id}/messages",
+                "type": "integration_interaction",
+                "method": "GET",
+                "internal": {
+                  "spec_hash_id": null,
+                  "catalog_item_id": null
+                },
+                "request_mapping": {
+                  "path": [
+                    {
+                      "value": {
+                        "variable": "step_756_result_1",
+                        "variable_path": "body.thread_id"
+                      },
+                      "parameter": "thread_id"
+                    }
+                  ],
+                  "header": [
+                    {
+                      "value": {
+                        "expression": "\"Bearer \"+${step_994_result_1.body.access_token}"
+                      },
+                      "parameter": "Authorization"
+                    }
+                  ]
+                },
+                "result_variable": "step_757_result_1"
+              }
+            },
+            "variable": "step_757",
+            "next_step": "step_973"
+          },
+          {
+            "step": "step_973",
+            "type": "standard",
+            "title": "メッセージにテキストが含まれるかを判断",
+            "output": {
+              "generic": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_118"
+                },
+                {
+                  "variable": "step_757"
+                }
+              ]
+            },
+            "variable": "step_973",
+            "condition": {
+              "or": [
+                {
+                  "expression": "${step_757_result_1.body}.size() < 2"
+                },
+                {
+                  "expression": "${step_757_result_1.body}[${step_757_result_1.body}.size() - 1].parent_message_id != ${step_757_result_1.body}[${step_757_result_1.body}.size() -2].id"
+                },
+                {
+                  "expression": "${step_757_result_1.body}[${step_757_result_1.body}.size() -1].role != 'assistant'"
+                }
+              ]
+            },
+            "next_step": "step_732"
+          },
+          {
+            "step": "step_732",
+            "type": "standard",
+            "title": "last_msgに返答（get(0).text）を代入",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "${step_757_result_1}.body.get(${step_757_result_1}.body.size() - 1).content.get(0).text"
+                  },
+                  "skill_variable": "last_msg"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_732",
+            "next_step": "step_126"
+          },
+          {
+            "step": "step_126",
+            "type": "standard",
+            "title": "返答（last_msg）を表示",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": ""
+                          },
+                          {
+                            "skill_variable": "last_msg"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_126",
+            "next_step": "step_560"
+          },
+          {
+            "step": "step_560",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "続けますか？"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential",
+                  "repeat_on_reprompt": false
+                },
+                {
+                  "options": [
+                    {
+                      "label": "はい",
+                      "value": {
+                        "input": {
+                          "text": "はい"
+                        }
+                      }
+                    },
+                    {
+                      "label": "いいえ",
+                      "value": {
+                        "input": {
+                          "text": "いいえ"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "申し訳ございません。分かりませんでした。回答を言い換えていただけますか。"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "allow_topic_switch": false,
+              "collect_verbatim_response": false,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_560",
+            "next_step": "step_848"
+          },
+          {
+            "step": "step_848",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "終わります。ありがとうございました。"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_848",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_560"
+                },
+                {
+                  "scalar": "no"
+                }
+              ]
+            },
+            "next_step": "step_265"
+          },
+          {
+            "step": "step_265",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "うれしいです！ 質問をどうぞ"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_265",
+            "next_step": "step_744"
+          },
+          {
+            "step": "step_744",
+            "type": "standard",
+            "title": "入力テキスト（input.textを）入力パラメータ（input_text）に代入",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "input.text"
+                  },
+                  "skill_variable": "input_text"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_744",
+            "next_step": "step_718"
+          },
+          {
+            "step": "step_718",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[DEBUG: 入力テキスト] "
+                          },
+                          {
+                            "skill_variable": "input_text"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_718",
+            "condition": {
+              "eq": [
+                {
+                  "skill_variable": "debug_mode"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_193"
+          },
+          {
+            "step": "step_193",
+            "type": "standard",
+            "title": "質問の再投稿",
+            "output": {
+              "generic": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_756"
+                },
+                {
+                  "variable": "step_159"
+                },
+                {
+                  "variable": "step_118"
+                },
+                {
+                  "variable": "step_757"
+                },
+                {
+                  "variable": "step_973"
+                },
+                {
+                  "variable": "step_732"
+                },
+                {
+                  "variable": "step_126"
+                },
+                {
+                  "variable": "step_560"
+                },
+                {
+                  "variable": "step_848"
+                },
+                {
+                  "variable": "step_265"
+                },
+                {
+                  "variable": "step_744"
+                },
+                {
+                  "variable": "step_718"
+                }
+              ]
+            },
+            "variable": "step_193"
+          }
+        ],
+        "title": "話題A *agent_id設定+example入力",
+        "action": "action_21393-2",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_21393_intent_49479-2"
+        },
+        "variables": [
+          {
+            "title": "[取得中] お待ちください...",
+            "variable": "step_118",
+            "data_type": "any"
+          },
+          {
+            "title": "{variable}",
+            "variable": "step_126",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_159",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_193",
+            "data_type": "any"
+          },
+          {
+            "title": "うれしいです！ 質問をどうぞ",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_265",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_366",
+            "data_type": "any"
+          },
+          {
+            "title": "[DEBUG: 【話題A】 最初の入力] {variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_420",
+            "data_type": "any"
+          },
+          {
+            "title": "続けますか？",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_560",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "[DEBUG: access_token] {variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_584",
+            "data_type": "any"
+          },
+          {
+            "title": "[DEBUG: 入力テキスト] {variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_718",
+            "data_type": "any"
+          },
+          {
+            "title": "[トークン取得しました]",
+            "variable": "step_726",
+            "data_type": "any"
+          },
+          {
+            "title": "",
+            "variable": "step_732",
+            "data_type": "any"
+          },
+          {
+            "title": "input_text にinput.textを代入",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_744",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_756",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_756_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_757",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_757_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "終わります。ありがとうございました。",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_848",
+            "data_type": "any"
+          },
+          {
+            "title": "",
+            "variable": "step_973",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_994",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_994_result_1",
+            "data_type": "any"
+          }
+        ],
+        "launch_mode": "learning",
+        "next_action": "action_21393-3",
+        "display_name": "",
+        "topic_switch": {
+          "allowed_from": true,
+          "allowed_into": true,
+          "never_return": false
+        },
+        "disambiguation_opt_out": false
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_366",
+            "type": "standard",
+            "title": "入力テキスト（input.textを）入力パラメータ（input_text）に代入",
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "input.text"
+                  },
+                  "skill_variable": "input_text"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_366",
+            "next_step": "step_420"
+          },
+          {
+            "step": "step_420",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[DEBUG: 【話題B】 最初の入力] "
+                          },
+                          {
+                            "skill_variable": "input_text"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_420",
+            "condition": {
+              "eq": [
+                {
+                  "skill_variable": "debug_mode"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_994"
+          },
+          {
+            "step": "step_994",
+            "type": "standard",
+            "title": "トークン取得（Extension）",
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/identity/token",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": null,
+                  "catalog_item_id": null
+                },
+                "request_mapping": {
+                  "query": [
+                    {
+                      "value": {
+                        "scalar": "urn:ibm:params:oauth:grant-type:apikey"
+                      },
+                      "parameter": "grant_type"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "ibm_cloud_api_key"
+                      },
+                      "parameter": "apikey"
+                    }
+                  ],
+                  "header": [
+                    {
+                      "value": {
+                        "scalar": "application/x-www-form-urlencoded"
+                      },
+                      "parameter": "Content-Type"
+                    }
+                  ]
+                },
+                "result_variable": "step_994_result_1"
+              }
+            },
+            "variable": "step_994",
+            "next_step": "step_726"
+          },
+          {
+            "step": "step_726",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[トークン取得しました]"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_726",
+            "next_step": "step_584"
+          },
+          {
+            "step": "step_584",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[DEBUG: access_token] "
+                          },
+                          {
+                            "variable": "step_994_result_1",
+                            "variable_path": "body.access_token"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_584",
+            "condition": {
+              "eq": [
+                {
+                  "skill_variable": "debug_mode"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_756"
+          },
+          {
+            "step": "step_756",
+            "type": "standard",
+            "title": "メッセージを投げる（Extension）*agent_id含む",
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/runs",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": null,
+                  "catalog_item_id": null
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "scalar": "user"
+                      },
+                      "parameter": "message.role"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "input_text"
+                      },
+                      "parameter": "message.content"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "wxo_agent_id_b"
+                      },
+                      "parameter": "agent_id"
+                    },
+                    {
+                      "value": {
+                        "skill_variable": "current_thread_id"
+                      },
+                      "parameter": "thread_id"
+                    }
+                  ],
+                  "header": [
+                    {
+                      "value": {
+                        "expression": "\"Bearer \"+${step_994_result_1.body.access_token}"
+                      },
+                      "parameter": "Authorization"
+                    }
+                  ]
+                },
+                "result_variable": "step_756_result_1"
+              }
+            },
+            "variable": "step_756",
+            "next_step": "step_159"
+          },
+          {
+            "step": "step_159",
+            "type": "standard",
+            "title": "thread_id を記録",
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "variable": "step_756_result_1",
+                    "variable_path": "body.thread_id"
+                  },
+                  "skill_variable": "current_thread_id"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_159",
+            "next_step": "step_118"
+          },
+          {
+            "step": "step_118",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "[取得中] お待ちください..."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_118",
+            "next_step": "step_757"
+          },
+          {
+            "step": "step_757",
+            "type": "standard",
+            "title": "メッセージ（body）を取得（Extension）",
+            "handlers": [],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/threads/{thread_id}/messages",
+                "type": "integration_interaction",
+                "method": "GET",
+                "internal": {
+                  "spec_hash_id": null,
+                  "catalog_item_id": null
+                },
+                "request_mapping": {
+                  "path": [
+                    {
+                      "value": {
+                        "variable": "step_756_result_1",
+                        "variable_path": "body.thread_id"
+                      },
+                      "parameter": "thread_id"
+                    }
+                  ],
+                  "header": [
+                    {
+                      "value": {
+                        "expression": "\"Bearer \"+${step_994_result_1.body.access_token}"
+                      },
+                      "parameter": "Authorization"
+                    }
+                  ]
+                },
+                "result_variable": "step_757_result_1"
+              }
+            },
+            "variable": "step_757",
+            "next_step": "step_973"
+          },
+          {
+            "step": "step_973",
+            "type": "standard",
+            "title": "メッセージにテキストが含まれるかを判断",
+            "output": {
+              "generic": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_118"
+                },
+                {
+                  "variable": "step_757"
+                }
+              ]
+            },
+            "variable": "step_973",
+            "condition": {
+              "or": [
+                {
+                  "expression": "${step_757_result_1.body}.size() < 2"
+                },
+                {
+                  "expression": "${step_757_result_1.body}[${step_757_result_1.body}.size() - 1].parent_message_id != ${step_757_result_1.body}[${step_757_result_1.body}.size() -2].id"
+                },
+                {
+                  "expression": "${step_757_result_1.body}[${step_757_result_1.body}.size() -1].role != 'assistant'"
+                }
+              ]
+            },
+            "next_step": "step_732"
+          },
+          {
+            "step": "step_732",
+            "type": "standard",
+            "title": "last_msgに返答（get(0).text）を代入",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "${step_757_result_1}.body.get(${step_757_result_1}.body.size() - 1).content.get(0).text"
+                  },
+                  "skill_variable": "last_msg"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_732",
+            "next_step": "step_126"
+          },
+          {
+            "step": "step_126",
+            "type": "standard",
+            "title": "返答（last_msg）を表示",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": ""
+                          },
+                          {
+                            "skill_variable": "last_msg"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_126",
+            "next_step": "step_560"
+          },
+          {
+            "step": "step_560",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "続けますか？"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential",
+                  "repeat_on_reprompt": false
+                },
+                {
+                  "options": [
+                    {
+                      "label": "はい",
+                      "value": {
+                        "input": {
+                          "text": "はい"
+                        }
+                      }
+                    },
+                    {
+                      "label": "いいえ",
+                      "value": {
+                        "input": {
+                          "text": "いいえ"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "申し訳ございません。分かりませんでした。回答を言い換えていただけますか。"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "allow_topic_switch": false,
+              "collect_verbatim_response": false,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_560",
+            "next_step": "step_848"
+          },
+          {
+            "step": "step_848",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "終わります。ありがとうございました。"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_848",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_560"
+                },
+                {
+                  "scalar": "no"
+                }
+              ]
+            },
+            "next_step": "step_265"
+          },
+          {
+            "step": "step_265",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "うれしいです！ 質問をどうぞ"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "question": {
+              "free_text": true
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_265",
+            "next_step": "step_744"
+          },
+          {
+            "step": "step_744",
+            "type": "standard",
+            "title": "入力テキスト（input.textを）入力パラメータ（input_text）に代入",
+            "output": {
+              "generic": []
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "input.text"
+                  },
+                  "skill_variable": "input_text"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_744",
+            "next_step": "step_718"
+          },
+          {
+            "step": "step_718",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "「DEBUG: 入力テキスト] "
+                          },
+                          {
+                            "skill_variable": "input_text"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_718",
+            "condition": {
+              "eq": [
+                {
+                  "skill_variable": "debug_mode"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_193"
+          },
+          {
+            "step": "step_193",
+            "type": "standard",
+            "title": "質問の再投稿",
+            "output": {
+              "generic": []
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_756"
+                },
+                {
+                  "variable": "step_159"
+                },
+                {
+                  "variable": "step_118"
+                },
+                {
+                  "variable": "step_757"
+                },
+                {
+                  "variable": "step_973"
+                },
+                {
+                  "variable": "step_732"
+                },
+                {
+                  "variable": "step_126"
+                },
+                {
+                  "variable": "step_560"
+                },
+                {
+                  "variable": "step_848"
+                },
+                {
+                  "variable": "step_265"
+                },
+                {
+                  "variable": "step_744"
+                },
+                {
+                  "variable": "step_718"
+                }
+              ]
+            },
+            "variable": "step_193"
+          }
+        ],
+        "title": "話題B *agent_id設定+example入力",
+        "action": "action_21393-3",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_21393_intent_49479-3"
+        },
+        "variables": [
+          {
+            "title": "[取得中] お待ちください...",
+            "variable": "step_118",
+            "data_type": "any"
+          },
+          {
+            "title": "{variable}",
+            "variable": "step_126",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_159",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_193",
+            "data_type": "any"
+          },
+          {
+            "title": "うれしいです！ 質問をどうぞ",
+            "variable": "step_265",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_366",
+            "data_type": "any"
+          },
+          {
+            "title": "[DEBUG: 【話題B】 最初の入力] {variable}",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_420",
+            "data_type": "any"
+          },
+          {
+            "title": "続けますか？",
+            "variable": "step_560",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "[DEBUG: access_token] {variable}",
+            "variable": "step_584",
+            "data_type": "any"
+          },
+          {
+            "title": "「DEBUG: 入力テキスト] {variable}",
+            "variable": "step_718",
+            "data_type": "any"
+          },
+          {
+            "title": "[トークン取得しました]",
+            "variable": "step_726",
+            "data_type": "any"
+          },
+          {
+            "title": "",
+            "variable": "step_732",
+            "data_type": "any"
+          },
+          {
+            "title": "input_text にinput.textを代入",
+            "variable": "step_744",
+            "data_type": "any"
+          },
+          {
+            "title": "メッセージを投げる（Extension）*agent_id含む",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_756",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_756_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_757",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_757_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "終わります。ありがとうございました。",
+            "variable": "step_848",
+            "data_type": "any"
+          },
+          {
+            "title": "",
+            "variable": "step_973",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "variable": "step_994",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_994_result_1",
+            "data_type": "any"
+          }
+        ],
+        "launch_mode": "learning",
+        "next_action": "fallback",
+        "display_name": "",
+        "topic_switch": {
+          "allowed_from": true,
+          "allowed_into": true,
+          "never_return": false
+        },
+        "disambiguation_opt_out": false
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_001",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "申し訳ございません。分かりませんでした。ご質問を言い換えてください。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001",
+            "condition": {
+              "lte": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": ""
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "fallback",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_002_result_1",
+                "ignore_end_action_steps": false
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "gt": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            }
+          }
+        ],
+        "title": "No matches",
+        "action": "anything_else",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "anything_else"
+        },
+        "variables": [
+          {
+            "title": "申し訳ございません。正しくお伺いしたいので、ご質問を別の言い方に言い換えてもう一度お願いいたします。",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002_result_1",
+            "data_type": "any"
+          }
+        ],
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "digression_failure",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "前のトピックに戻りたいかどうか確認できませんでした。エージェントに接続します。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "利用できるエージェントに転送いたします。"
+                },
+                "agent_unavailable": {
+                  "message": "現時点で利用できるエージェントはありません。利用できるようになったら、お取り次ぎいたします。"
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "digression_failure",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Failed to confirm topic return"
+                }
+              ]
+            },
+            "next_step": "step_001"
+          },
+          {
+            "step": "step_001",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "申し訳ございません。分かりませんでした。エージェントにお取り次ぎできます。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "利用できるエージェントに転送いたします。"
+                },
+                "agent_unavailable": {
+                  "message": "現時点で利用できるエージェントはありません。利用できるようになったら、お取り次ぎいたします。"
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_001",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Step validation failed"
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "お役に立てず申し訳ありません。すぐにエージェントにお取り次ぎいたします。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "利用できるエージェントに転送いたします。"
+                },
+                "agent_unavailable": {
+                  "message": "現時点で利用できるエージェントはありません。利用できるようになったら、お取り次ぎいたします。"
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Agent requested"
+                }
+              ]
+            },
+            "next_step": "step_003"
+          },
+          {
+            "step": "step_003",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "申し訳ありませんが、お尋ねの件が分かりません。エージェントにお取り次ぎいたします。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "利用できるエージェントに転送いたします。"
+                },
+                "agent_unavailable": {
+                  "message": "現時点で利用できるエージェントはありません。利用できるようになったら、お取り次ぎいたします。"
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_003",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "No action matches"
+                }
+              ]
+            },
+            "next_step": "step_004"
+          },
+          {
+            "step": "step_004",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "この会話は、人間のエージェントが対応したほうがよさそうです。 エージェントに接続いたします。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "利用できるエージェントに転送いたします。"
+                },
+                "agent_unavailable": {
+                  "message": "現時点で利用できるエージェントはありません。 利用できるようになったら、お取り次ぎいたします。"
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_004",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Danger word detected"
+                }
+              ]
+            },
+            "next_step": "step_005"
+          },
+          {
+            "step": "step_005",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "この会話は、人間のエージェントが対応したほうがよさそうです。 エージェントに接続いたします。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "connect_to_agent",
+              "response": {
+                "transfer_info": {
+                  "target": {}
+                },
+                "agent_available": {
+                  "message": "利用できるエージェントに転送いたします。"
+                },
+                "agent_unavailable": {
+                  "message": "現時点で利用できるエージェントはありません。 利用できるようになったら、お取り次ぎいたします。"
+                },
+                "message_to_human_agent": ""
+              }
+            },
+            "variable": "step_005",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Profanity detected"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Fallback",
+        "action": "fallback",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "fallback_connect_to_agent"
+        },
+        "variables": [
+          {
+            "title": "トピックに戻れませんでした",
+            "variable": "digression_failure",
+            "data_type": "any"
+          },
+          {
+            "title": "申し訳ございません。分かりませんでした。エージェントにお取り次ぎできます。",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "title": "お役に立てず申し訳ありません。すぐにエージェントにお取り次ぎいたします。",
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "title": "申し訳ありませんが、お尋ねの件が分かりません。エージェントにお取り次ぎいたします。",
+            "variable": "step_003",
+            "data_type": "any"
+          },
+          {
+            "title": "この会話はうまくいっているようです",
+            "variable": "step_004",
+            "data_type": "any"
+          },
+          {
+            "title": "不敬な言葉-この会話は",
+            "variable": "step_005",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "run_always",
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "danger_word_detected",
+            "type": "standard",
+            "title": "Connect to agent",
+            "handlers": [],
+            "resolver": {
+              "type": "fallback"
+            },
+            "variable": "danger_word_detected_variable",
+            "condition": {
+              "entity": "danger_words"
+            },
+            "next_step": "profanity_detected"
+          },
+          {
+            "step": "profanity_detected",
+            "type": "standard",
+            "title": "Show warning",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "アシスタントと対話する際には、適切な言語を使用してください。"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "max_hits",
+                "handler": "max_hits_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "max_hits": 2,
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "profanity_detected_variable",
+            "condition": {
+              "entity": "profane_words"
+            }
+          }
+        ],
+        "title": "Trigger word detected",
+        "action": "run_always",
+        "boosts": [],
+        "handlers": [],
+        "variables": [
+          {
+            "title": "Profanity detected",
+            "variable": "danger_word_detected_variable",
+            "data_type": "any"
+          },
+          {
+            "title": "Profane word detected",
+            "variable": "profanity_detected_variable",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "anything_else"
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_001",
+            "type": "standard",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "いらっしゃいませ。ご用件をお伺いいたします。"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001"
+          }
+        ],
+        "title": "Greet customer",
+        "action": "welcome",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "welcome"
+        },
+        "variables": [
+          {
+            "variable": "step_001",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "action_11692",
+        "disambiguation_opt_out": true
+      }
+    ],
+    "intents": [
+      {
+        "intent": "action_11692_intent_18993",
+        "examples": [
+          {
+            "text": "有人チャットと話したい"
+          }
+        ]
+      },
+      {
+        "intent": "action_21393_intent_49479-2",
+        "examples": [
+          {
+            "text": "話題A-1"
+          },
+          {
+            "text": "話題A-2"
+          },
+          {
+            "text": "話題A-3"
+          }
+        ]
+      },
+      {
+        "intent": "action_21393_intent_49479-3",
+        "examples": [
+          {
+            "text": "話題B-1"
+          },
+          {
+            "text": "話題B-2"
+          },
+          {
+            "text": "話題B-3"
+          }
+        ]
+      },
+      {
+        "intent": "fallback_connect_to_agent",
+        "examples": [
+          {
+            "text": "カスタマーセンターに繋げることは出来ますか？"
+          },
+          {
+            "text": "この案件の担当者に電話して。"
+          },
+          {
+            "text": "ヘルプセンターに繋げてください"
+          },
+          {
+            "text": "担当者と直接話しをしたい"
+          },
+          {
+            "text": "担当者に繋げて欲しい"
+          }
+        ],
+        "description": "人間のエージェント要求します"
+      }
+    ],
+    "entities": [
+      {
+        "entity": "danger_words",
+        "values": [],
+        "fuzzy_match": false
+      },
+      {
+        "entity": "profane_words",
+        "values": [],
+        "fuzzy_match": false
+      },
+      {
+        "entity": "sys-yes-no",
+        "values": []
+      }
+    ],
+    "metadata": {
+      "skill": {
+        "counts": {
+          "actions": 8,
+          "intents": 5,
+          "entities": 3,
+          "data_types": 0,
+          "collections": 0,
+          "global_variables": 5
+        }
+      },
+      "api_version": {
+        "major_version": "v2",
+        "minor_version": "2018-11-08"
+      }
+    },
+    "variables": [
+      {
+        "title": "IBM Cloud API Key",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "ibm_cloud_api_key",
+        "data_type": "string",
+        "description": "IBM Cloud IAM API Key"
+      },
+      {
+        "title": "wxO Agent ID (話題A)",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "wxo_agent_id_a",
+        "data_type": "string",
+        "description": "話題A用のwatsonx Orchestrateエージェントid"
+      },
+      {
+        "title": "wxO Agent ID (話題B)",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "wxo_agent_id_b",
+        "data_type": "string",
+        "description": "話題B用のwatsonx Orchestrateエージェントid"
+      },
+      {
+        "title": "current_thread_id",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "current_thread_id",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "current_user_msg_id",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "current_user_msg_id",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "debug_mode",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "debug_mode",
+        "data_type": "boolean",
+        "description": "",
+        "initial_value": {
+          "scalar": true
+        }
+      },
+      {
+        "title": "input_text",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "input_text",
+        "data_type": "any",
+        "description": "",
+        "initial_value": {
+          "expression": "input.text"
+        }
+      },
+      {
+        "title": "last_msg",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "last_msg",
+        "data_type": "any",
+        "description": ""
+      }
+    ],
+    "data_types": [],
+    "collections": [],
+    "counterexamples": [],
+    "system_settings": {
+      "variable": {
+        "format": {
+          "time": {
+            "pattern": "short"
+          },
+          "currency": {
+            "fraction_digits": 2
+          }
+        }
+      },
+      "auto_learn": {
+        "apply": true
+      },
+      "topic_switch": {
+        "enabled": true,
+        "messages": {
+          "enable_confirmation": true,
+          "confirmation_failure": {
+            "generic": [
+              {
+                "values": [
+                  {
+                    "text_expression": {
+                      "concat": [
+                        {
+                          "scalar": "申し訳ありません。聞き取れませんでした。確認してください。"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              }
+            ]
+          },
+          "confirmation_request": {
+            "generic": [
+              {
+                "values": [
+                  {
+                    "text_expression": {
+                      "concat": [
+                        {
+                          "scalar": "前のトピックを続けますか: "
+                        },
+                        {
+                          "system_variable": "digressed_from"
+                        },
+                        {
+                          "scalar": "?"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              },
+              {
+                "options": [
+                  {
+                    "label": "はい",
+                    "value": {
+                      "input": {
+                        "text": "はい"
+                      }
+                    }
+                  },
+                  {
+                    "label": "いいえ",
+                    "value": {
+                      "input": {
+                        "text": "いいえ"
+                      }
+                    }
+                  }
+                ],
+                "response_type": "option",
+                "repeat_on_reprompt": true
+              }
+            ]
+          }
+        },
+        "max_tries": 3
+      },
+      "disambiguation": {
+        "prompt": "以下でよろしかったでしょうか:",
+        "enabled": true,
+        "randomize": true,
+        "max_suggestions": 5,
+        "suggestion_text_policy": "title",
+        "none_of_the_above_prompt": "上記のいずれでもありません",
+        "use_connect_to_support_prompt": "サポートへの接続",
+        "single_answer_clarification_prompt": "その他"
+      },
+      "search_routing": {
+        "target": "conversational_search"
+      }
+    },
+    "learning_opt_out": true
+  },
+  "description": "created for assistant 96ef4771-b9d4-456d-a480-b6c117be9932",
+  "assistant_id": "c2bde2eb-9e09-4d06-9125-0f3e0b15201c",
+  "workspace_id": "90b6dfb5-382a-4110-971b-620049107dc4",
+  "dialog_settings": {},
+  "next_snapshot_version": "1",
+  "environment_id": "1707926d-ea32-4778-8836-26d639142e95"
+}

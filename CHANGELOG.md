@@ -1,5 +1,41 @@
 # 変更履歴 (CHANGELOG)
 
+## [1.2.0] - 2026-02-13
+
+### ✨ 機能追加・改善
+- **wxA Extension: リージョン対応**
+  - `wxo-agent-access.json`にServer Variables機能を追加
+  - `region`と`instanceid`をExtension追加時に指定可能に
+  - 複数リージョン（us-south, jp-tok, eu-de, eu-gb）に対応
+
+- **Session Variables方式への移行**
+  - API KeyとAgent IDをSession Variablesで管理
+  - `ibm_cloud_api_key`, `wxo_agent_id_a`, `wxo_agent_id_b`の3変数を定義
+  - 複数Actionで変数を共有可能に
+
+### 📝 ドキュメント改善
+- **extensions/README.mdの全面改訂**
+  - セットアップ手順を詳細化（5ステップ構成）
+  - Extension登録手順を明確化
+  - Extensionステップの再設定手順を追加
+  - セキュリティに関する注意事項を追加
+
+### ⚠️ 重要な変更
+- **Protected Session Variables機能の非採用**
+  - 当初検討したProtected設定は実質的な保護機能が不十分と判明
+  - Variables編集画面やエクスポート時に生の値が表示される
+  - 通常のSession Variablesとして運用（`privacy.enabled: false`）
+  - 運用ルールの徹底で対応（エクスポートファイルのコミット禁止など）
+
+### 🔧 技術的変更
+- **wxa-wxo-slack-action.json更新**
+  - Session Variables定義を追加（初期値なし）
+  - API Key参照を`skill_variable`方式に変更
+  - Agent ID参照を`skill_variable`方式に変更
+  - Extension参照情報は環境依存のため`null`のまま維持
+
+---
+
 ## [1.1.0] - 2026-02-06
 
 ### 🔒 セキュリティ改善
